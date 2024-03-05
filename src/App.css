@@ -1,0 +1,4 @@
+.grid-layout{
+  grid-template-columns: 18rem 1fr;
+  grid-template-rows: auto 1fr;
+}
