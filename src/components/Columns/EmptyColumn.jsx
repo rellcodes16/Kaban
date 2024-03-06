@@ -9,8 +9,8 @@ function EmptyColumn() {
     console.log(activeBoard)
   return (
     <main>
-        <div className="text-gray-500">
-          <p>The board is empty. Create a new column to get started.</p>
+        <div className="text-gray-500 text-lg flex flex-col justify-center items-center">
+          <p className="text-center">The board is empty. Create a new column to get started.</p>
           <div>
             <ButtonTemplate type='primary'>+Add New Column</ButtonTemplate>
           </div>

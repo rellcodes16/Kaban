@@ -39,15 +39,36 @@ const dataSlice = createSlice({
             const updatedBoards = state.boards.filter(board => board.name !== action.payload.name);
             return { ...state, boards: updatedBoards };
         },
-        updateBoard: (state, action) => {
-            const { updatedBoard, activeBoard } = action.payload;
+        editBoard: (state, action) => {
+            const { updatedBoard, name } = action.payload;
+            console.log(name)
       
             const updatedBoards = state.boards.map((board) =>
-              board.name === activeBoard.name ? updatedBoard : board
+              board.name === name ? updatedBoard : board
             );
       
             state.boards = updatedBoards;
         },
+        addCol: (state, action) => {
+          const { updatedBoard, activeBoard } = action.payload
+    
+          const updatedBoards = state.boards.map((board) => 
+            board.name === activeBoard.name ? updatedBoard : board
+          )
+    
+          state.boards = updatedBoards;
+        },
+        switchCol: (state, action) => {
+            const updatedBoard = action.payload;
+    
+            const boardIndex = state.boards.findIndex(
+              (board) => board.name === updatedBoard.name
+            );
+    
+            if (boardIndex !== -1) {
+              state.boards[boardIndex] = updatedBoard;
+            }
+        }
     },
     extraReducers(builder) {
       builder
@@ -67,6 +88,6 @@ const dataSlice = createSlice({
 
 })
 
-export const { addBoard, deleteBoard, updateBoard } = dataSlice.actions
+export const { addBoard, deleteBoard, editBoard, addCol, switchCol } = dataSlice.actions
 
 export default dataSlice.reducer

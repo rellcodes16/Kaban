@@ -34,7 +34,7 @@ function Toggle({ id, name }) {
 
     return (
         <button onClick={handleToggle} className="bg-none border-none p-2 rounded-sm transform translate-x-3 transition-all">
-            <HiEllipsisVertical className="text-2xl"/>
+            <HiEllipsisVertical className="text-3xl text-gray-400 hover:text-indigo-600"/>
         </button>
     );
 }

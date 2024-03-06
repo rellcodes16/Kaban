@@ -1,47 +1,48 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { addBoard } from '../../features/dataSlice';
+import { editBoard } from '../../features/dataSlice';
 import { HiXMark } from 'react-icons/hi2';
 import FormRow from '../../ui/FormRow';
+import { useBoards } from '../../context/BoardsContext';
 
-function BoardForm({ onCloseModal }) {
+function EditBoardForm({ onCloseModal, board }) {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const dispatch = useDispatch();
 
-  const [boardName, setBoardName] = useState('');
-  const [columns, setColumns] = useState([{ name: "Todo", tasks: [] }]);
-  const [columnInputs, setColumnInputs] = useState([{ id: 0 }]);
+  const { activeBoard, setActiveBoard } = useBoards();
+
+  console.log(board.name)
+  console.log('name', activeBoard.name)
+
+
+  const [boardName, setBoardName] = useState(board.name);
+  const [columns, setColumns] = useState(board.columns);
+
 
   useEffect(() => {
     register("board_name");
   }, [register]);
 
-  const handleAddColumnInput = () => {
-    setColumnInputs([...columnInputs, { id: Date.now() }]);
-  };
-
-  const handleRemoveColumnInput = (id) => {
-    setColumnInputs(columnInputs.filter(input => input.id !== id));
-    setColumns(columns.filter((col, index) => index !== columns.length - 1));
-  };
-
-  const handleBoard = (data) => {
-    const newColumns = columns.map(column => ({ name: column.name, tasks: [] }));
-    dispatch(addBoard({ name: boardName, columns: newColumns }));
-    onCloseModal();
-  };
-  
   const handleColumnChange = (e, index) => {
     const { value } = e.target;
     const updatedColumns = [...columns];
-    updatedColumns[index] = { name: value, tasks: [] };
+    updatedColumns[index] = { ...updatedColumns[index], name: value };
     setColumns(updatedColumns);
   };
 
+  const handleEditBoard = () => {
+    const updatedBoard = { ...board, name: boardName, columns };
+    dispatch(editBoard(updatedBoard, activeBoard.name));
+    setActiveBoard(updatedBoard)
+    console.log(updatedBoard)
+    console.log('active board', activeBoard.name)
+    onCloseModal();
+  };
+
   return (
-    <form className='min-w-[400px]' onSubmit={handleSubmit(handleBoard)}>
-      <h1 className="text-2xl font-bold mb-4 dark:text-white">Add New Board</h1>
+    <form className='min-w-[400px]' onSubmit={handleSubmit(handleEditBoard)}>
+      <h1 className="text-2xl font-bold mb-4">Edit Board</h1>
       <FormRow label="Board Name" error={errors?.board_name?.message}>
         <input
           type="text"
@@ -55,30 +56,34 @@ function BoardForm({ onCloseModal }) {
       </FormRow>
       <div className="text-black">
         <span className="text-gray-400">Board Columns</span>
-        {columnInputs.map((input, index) => (
-          <div key={input.id} className="flex">
+        {columns.map((column, index) => (
+          <div key={index} className="flex">
             <input
               type="text"
               className="border-solid border text-gray-500 border-black rounded-sm px-2 py-1 mb-3 w-[90%]"
               placeholder="Done"
-              value={columns[index]?.name || ''}
+              value={column.name}
               onChange={(e) => handleColumnChange(e, index)}
             />
-            {(index > 0 || columnInputs.length > 1) && (
-              <span
-                onClick={() => handleRemoveColumnInput(input.id)}
-                className="hover:text-red-500 ml-2 mb-3 cursor-pointer"
-              >
-                <HiXMark className="text-3xl" />
-              </span>
-            )}
-           </div>
-         ))}
+            <span
+              onClick={() => {
+                const updatedColumns = columns.filter((col, i) => i !== index);
+                setColumns(updatedColumns);
+              }}
+              className="hover:text-red-500 ml-2 mb-3 cursor-pointer"
+            >
+              <HiXMark className="text-3xl" />
+            </span>
+          </div>
+        ))}
       </div>
 
       <div className="">
         <div
-          onClick={handleAddColumnInput}
+          onClick={() => {
+            const newColumn = { name: '' }; // You can set default values for new columns
+            setColumns([...columns, newColumn]);
+          }}
           className="capitalize text-center text-indigo-500 rounded-full py-2 bg-gray-300 w-full text-lg mb-3"
         >
           + Add New Column
@@ -87,11 +92,11 @@ function BoardForm({ onCloseModal }) {
           type="submit"
           className="capitalize text-center bg-indigo-500 rounded-full py-2 text-gray-300 w-full text-lg"
         >
-          Create New Board
+          Save Changes
         </button>
       </div>
     </form>
   );
 }
 
-export default BoardForm;
+export default EditBoardForm;

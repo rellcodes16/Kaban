@@ -20,7 +20,7 @@ function TaskForm({ onCloseModal }) {
 
   return (
     <form onSubmit={handleSubmit(handleTask, handleError)} className="min-w-[500px] text-black">
-      <h1 className="text-2xl font-bold mb-4">Add New Task</h1>
+      <h1 className="text-2xl font-bold mb-4 dark:text-white">Add New Task</h1>
       <FormRow label='Title' error={errors?.title?.message}>
         <input type="text" id="title" className="border-solid border border-gray-500 rounded-sm px-1 py-1 mb-3" {...register ('title', 
         {required: 'This field is required'})}/>

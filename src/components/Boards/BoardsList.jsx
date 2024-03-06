@@ -8,7 +8,7 @@ function BoardsList() {
   const { activeBoard, setActiveBoard } = useBoards()
   const { loading, boards, error } = useSelector(state => state.data)
 
-  console.log(boards[0])
+  console.log(boards)
 
   
   useEffect(() => {
@@ -19,7 +19,7 @@ function BoardsList() {
 
   return (
     <div>
-        {boards.map(board => <BoardsItem board={board} key={board.id}/> )}
+        {boards?.map(board => <BoardsItem board={board} key={board.id}/> )}
 
         <AddBoards />
     </div>

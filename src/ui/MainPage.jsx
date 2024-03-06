@@ -8,7 +8,7 @@ function MainPage() {
   return (
     <div className={`flex gap-10 text-gray-300 font-3xl font-bold ${!activeBoard || activeBoard?.columns === undefined && 'flex-col items-center justify-center'}`}>
       {activeBoard && <FilledColumn />}
-      {!activeBoard || activeBoard?.columns === undefined && <EmptyColumn />}
+      {!activeBoard || activeBoard?.columns === undefined || activeBoard.columns.length === 0 && <EmptyColumn />}
       {/* <InfoColumn /> */}
     </div>
   )

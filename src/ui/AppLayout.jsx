@@ -21,8 +21,8 @@ const AppLayout = () => {
         <Sidebar />
         <Header />
 
-        <main className={`overflow-auto bg-gray-900 col-end-[-1] sm:py-10 sm:px-10 md:px-10 md:py-10 `}>
-            <div className="max-w-[120rem] my-0 mx-[auto] py-5 h-full flex flex-col bg-gray-900">
+        <main className={`overflow-auto dark:bg-gray-900 bg-slate-200 col-end-[-1] sm:py-10 sm:px-10 md:px-10 md:py-10 `}>
+            <div className="max-w-[120rem] my-0 mx-[auto] py-5 h-full flex flex-col dark:bg-gray-900 bg-slate-200 ">
                <MainPage /> 
             </div>
         </main>

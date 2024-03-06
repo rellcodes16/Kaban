@@ -1,7 +1,12 @@
+import { useDarkMode } from "../context/ColorModeToggle"
+
 function Logo() {
+  const { isDarkMode } = useDarkMode()
+  
+
   return (
     <div>
-        <img src="logo-light.svg" alt="logo-in-dark-mode" />
+        {isDarkMode ? (<img src="logo-light.svg" alt="logo-in-dark-mode" />) : (<img src="logo-dark.svg" alt="logo-in-light-mode" />)}
     </div>
   )
 }
