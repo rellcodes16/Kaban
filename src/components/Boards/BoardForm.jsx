@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { addBoard } from '../../features/dataSlice';
 import { HiXMark } from 'react-icons/hi2';
 import FormRow from '../../ui/FormRow';
+import { v4 as uuidv4 } from 'uuid';
 
 function BoardForm({ onCloseModal }) {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -18,7 +19,7 @@ function BoardForm({ onCloseModal }) {
   }, [register]);
 
   const handleAddColumnInput = () => {
-    setColumnInputs([...columnInputs, { id: Date.now() }]);
+    setColumnInputs([...columnInputs, { id:  uuidv4()}]);
   };
 
   const handleRemoveColumnInput = (id) => {
@@ -28,10 +29,11 @@ function BoardForm({ onCloseModal }) {
 
   const handleBoard = (data) => {
     const newColumns = columns.map(column => ({ name: column.name, tasks: [] }));
-    dispatch(addBoard({ name: boardName, columns: newColumns }));
+    const newBoard = { name: boardName, columns: newColumns, id: uuidv4() };
+    dispatch(addBoard(newBoard));
     onCloseModal();
   };
-  
+
   const handleColumnChange = (e, index) => {
     const { value } = e.target;
     const updatedColumns = [...columns];
@@ -41,7 +43,7 @@ function BoardForm({ onCloseModal }) {
 
   return (
     <form className='min-w-[400px]' onSubmit={handleSubmit(handleBoard)}>
-      <h1 className="text-2xl font-bold mb-4 dark:text-white">Add New Board</h1>
+      <h1 className="text-2xl font-bold mb-4 dark:text-gray-400 text-gray-600">Add New Board</h1>
       <FormRow label="Board Name" error={errors?.board_name?.message}>
         <input
           type="text"
@@ -54,12 +56,12 @@ function BoardForm({ onCloseModal }) {
         />
       </FormRow>
       <div className="text-black">
-        <span className="text-gray-400">Board Columns</span>
+        <span className="dark:text-gray-400 text-gray-600">Board Columns</span>
         {columnInputs.map((input, index) => (
           <div key={input.id} className="flex">
             <input
               type="text"
-              className="border-solid border text-gray-500 border-black rounded-sm px-2 py-1 mb-3 w-[90%]"
+              className="border-solid border text-gray-500 rounded-sm px-2 py-1 mb-3 w-[90%]"
               placeholder="Done"
               value={columns[index]?.name || ''}
               onChange={(e) => handleColumnChange(e, index)}
@@ -69,7 +71,7 @@ function BoardForm({ onCloseModal }) {
                 onClick={() => handleRemoveColumnInput(input.id)}
                 className="hover:text-red-500 ml-2 mb-3 cursor-pointer"
               >
-                <HiXMark className="text-3xl" />
+                <HiXMark className="text-3xl text-gray-400" />
               </span>
             )}
            </div>
@@ -79,7 +81,7 @@ function BoardForm({ onCloseModal }) {
       <div className="">
         <div
           onClick={handleAddColumnInput}
-          className="capitalize text-center text-indigo-500 rounded-full py-2 bg-gray-300 w-full text-lg mb-3"
+          className="capitalize text-center text-indigo-500 rounded-full py-2 bg-gray-300 cursor-pointer w-full text-lg mb-3"
         >
           + Add New Column
         </div>

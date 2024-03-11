@@ -5,7 +5,8 @@ const ModeContext = createContext()
 
 
 function ModeProvider({ children }){
-    const [isDarkMode, setIsDarkMode] = useLocalStorage('isDark')
+    const [isDarkMode, setIsDarkMode] = useLocalStorage(window.matchMedia("(prefers-color-scheme: dark)").matches,
+    "isDarkMode")
 
     useEffect(function(){
         if(isDarkMode){

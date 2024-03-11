@@ -6,18 +6,17 @@ import { HiXMark } from 'react-icons/hi2';
 import FormRow from '../../ui/FormRow';
 import { useBoards } from '../../context/BoardsContext';
 
-function EditBoardForm({ onCloseModal, board }) {
+function EditBoardForm({ onCloseModal, board, disableName, disableName2 }) {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const dispatch = useDispatch();
 
   const { activeBoard, setActiveBoard } = useBoards();
 
-  console.log(board.name)
-  console.log('name', activeBoard.name)
-
+  console.log(board?.name)
+  console.log('name', activeBoard?.name)
 
   const [boardName, setBoardName] = useState(board.name);
-  const [columns, setColumns] = useState(board.columns);
+  const [columns, setColumns] = useState(board?.columns);
 
 
   useEffect(() => {
@@ -32,7 +31,10 @@ function EditBoardForm({ onCloseModal, board }) {
   };
 
   const handleEditBoard = () => {
-    const updatedBoard = { ...board, name: boardName, columns };
+    const updatedColsWithDefaultTasks = columns.map(column => {
+      return { ...column, tasks: column.tasks ? column.tasks : [] };
+    });
+    const updatedBoard = { ...board, name: boardName, columns: updatedColsWithDefaultTasks };
     dispatch(editBoard(updatedBoard, activeBoard.name));
     setActiveBoard(updatedBoard)
     console.log(updatedBoard)
@@ -42,12 +44,13 @@ function EditBoardForm({ onCloseModal, board }) {
 
   return (
     <form className='min-w-[400px]' onSubmit={handleSubmit(handleEditBoard)}>
-      <h1 className="text-2xl font-bold mb-4">Edit Board</h1>
+      <h1 className="text-2xl font-bold mb-4 dark:text-white text-black">Edit Board</h1>
       <FormRow label="Board Name" error={errors?.board_name?.message}>
         <input
           type="text"
+          disabled={disableName || disableName2}
           id="name"
-          className="border-solid border border-gray-500 rounded-sm px-1 py-1 mb-3"
+          className="border-solid border rounded-md px-1 py-1 mb-3"
           value={boardName}
           onChange={(e) => setBoardName(e.target.value)}
           placeholder='e.g. Web Design'
@@ -55,12 +58,12 @@ function EditBoardForm({ onCloseModal, board }) {
         />
       </FormRow>
       <div className="text-black">
-        <span className="text-gray-400">Board Columns</span>
+        <span className="text-gray-400 mb-2">Board Columns</span>
         {columns.map((column, index) => (
           <div key={index} className="flex">
             <input
               type="text"
-              className="border-solid border text-gray-500 border-black rounded-sm px-2 py-1 mb-3 w-[90%]"
+              className="border-solid border text-gray-500 rounded-md px-2 py-1 mb-3 w-[90%]"
               placeholder="Done"
               value={column.name}
               onChange={(e) => handleColumnChange(e, index)}
@@ -72,7 +75,7 @@ function EditBoardForm({ onCloseModal, board }) {
               }}
               className="hover:text-red-500 ml-2 mb-3 cursor-pointer"
             >
-              <HiXMark className="text-3xl" />
+              <HiXMark className="text-4xl text-gray-400 hover:text-indigo-600" />
             </span>
           </div>
         ))}
@@ -81,7 +84,7 @@ function EditBoardForm({ onCloseModal, board }) {
       <div className="">
         <div
           onClick={() => {
-            const newColumn = { name: '' }; // You can set default values for new columns
+            const newColumn = { name: '', tasks: [] }; // You can set default values for new columns
             setColumns([...columns, newColumn]);
           }}
           className="capitalize text-center text-indigo-500 rounded-full py-2 bg-gray-300 w-full text-lg mb-3"

@@ -1,5 +1,7 @@
 import { useBoards } from "../../context/BoardsContext";
 import ButtonTemplate from "../../ui/ButtonTemplate";
+import NewColumn from "./NewColumn";
+import NewColumn2 from "./NewColumn2";
 
 function EmptyColumn() {
     const { activeBoard } = useBoards()
@@ -12,7 +14,7 @@ function EmptyColumn() {
         <div className="text-gray-500 text-lg flex flex-col justify-center items-center">
           <p className="text-center">The board is empty. Create a new column to get started.</p>
           <div>
-            <ButtonTemplate type='primary'>+Add New Column</ButtonTemplate>
+            <NewColumn2 />
           </div>
         </div>
     </main>

@@ -32,7 +32,8 @@ const dataSlice = createSlice({
         addBoard: (state, action) => {
             state.boards.push({
               name: action.payload.name,
-              columns: action.payload.columns
+              columns: action.payload.columns,
+              id: action.payload.id
             })
         },
         deleteBoard: (state, action) => {

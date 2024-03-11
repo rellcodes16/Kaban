@@ -1,5 +1,6 @@
 import { useBoards } from "../../context/BoardsContext";
 import Column from "./Column";
+import NewColumn from "./NewColumn";
 
 function FilledColumn() {
     const { activeBoard } = useBoards()
@@ -11,9 +12,7 @@ function FilledColumn() {
     <main className="flex gap-16 mb-10">
         {activeBoard?.columns?.map((column, index) =>  <Column key={index} column={column} />)}
 
-       {activeBoard.columns.length > 0 && ( <button className="min-w-[300px] mr-4 h-full flex flex-col mt-10 items-center justify-center text-gray-400 text-2xl rounded-lg bg-white dark:bg-black dark:opacity-10">
-          +New Column
-        </button>)}
+       <NewColumn />
     </main>
   )
 }

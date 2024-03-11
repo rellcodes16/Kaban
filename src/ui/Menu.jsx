@@ -52,7 +52,7 @@ function List({ id, children, name }) {
     if (openMenuId !== id) return null;
 
     return createPortal(
-        <div className={`fixed ${!name && 'shadow-md rounded-md z-10 bg-gray-100 p-4'}`} style={{ right: x, top: y }} ref={ref}>{children}</div>, document.body
+        <div className={`fixed bg-white dark:bg-gray-900 text-gray-400 ${!name && 'shadow-md rounded-md z-50 bg-gray-100 p-4'}`} style={{ right: x, top: y }} ref={ref}>{children}</div>, document.body
     );
 }
 

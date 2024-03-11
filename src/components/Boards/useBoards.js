@@ -1,11 +1,11 @@
-// import { useQuery } from "@tanstack/react-query";
-// import { getData } from "../../services/apiData";
+import { useQuery } from "@tanstack/react-query";
+import { getBoards } from "../../services/apiBoards";
 
-// export function useBoards(){
-//     const {isLoading, data: boards, error} = useQuery({
-//         queryKey: ['boards'],
-//         queryFn: getData
-//     })
+export function useBoard(){
+    const {isLoading, data: boardsData, error} = useQuery({
+        queryKey: ['boards'],
+        queryFn: getBoards,
+    })
 
-//     return { isLoading, boards, error }
-// }
+    return { isLoading, boardsData, error }
+}

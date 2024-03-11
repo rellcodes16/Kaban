@@ -7,6 +7,7 @@ import ConfirmDeletion from "./ConfirmDeletion"
 import { useDispatch } from "react-redux"
 import { deleteBoard } from "../features/dataSlice"
 import EditBoardForm from "../components/Boards/EditBoardForm"
+import Logo from "./Logo"
 
 function Header({ onCloseModal }) {
     const { activeBoard, setActiveBoard } = useBoards()
@@ -27,14 +28,16 @@ function Header({ onCloseModal }) {
     
   return (
     <div className="h-[80px] w-full px-4 flex justify-between items-center dark:bg-gray-800 bg-white border border-gray-200 dark:border-gray-600 border-solid">
+        {/* <Logo /> */}
+        
         <h1 className="text-2xl font-bold dark:text-gray-400 text-black">{activeBoard?.name}</h1>
         <div className="flex gap-2">
             <AddNewTask />
             <Modal>
                 <div className="flex items-center justify-end">
                     <Menu>
-                        <Toggle id='taskId'/>
-                        <List id='taskId'>
+                        <Toggle id='boardId'/>
+                        <List id='boardId'>
                             <Modal.Open openModalName='edit'>
                                 <Button icon={<HiPencil />}>Edit Board</Button>
                             </Modal.Open>
